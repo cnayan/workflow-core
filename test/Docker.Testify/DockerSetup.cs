@@ -7,8 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Docker.Testify
@@ -28,21 +26,21 @@ namespace Docker.Testify
         public abstract void PublishConnectionInfo();
 
         protected readonly DockerClient docker;
-    	protected string containerId;
+        protected string containerId;
 
         protected DockerSetup()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-    			docker = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine")).CreateClient();
-    		else
-    			docker = new DockerClientConfiguration(new Uri("unix:///var/run/docker.sock")).CreateClient();
+                docker = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine")).CreateClient();
+            else
+                docker = new DockerClientConfiguration(new Uri("unix:///var/run/docker.sock")).CreateClient();
 
             ExternalPort = GetFreePort();
 
             Debug.WriteLine($"Selected port {ExternalPort}");
 
             StartContainer().Wait();
-    	}
+        }
 
         public async Task StartContainer()
         {
@@ -56,7 +54,7 @@ namespace Docker.Testify
             hostCfg.PortBindings = new Dictionary<string, IList<PortBinding>>();
             hostCfg.PortBindings.Add($"{InternalPort}/tcp", new PortBinding[] { pb });
 
-            await PullImage(ImageName, ImageTag);	        
+            await PullImage(ImageName, ImageTag);
 
             var container = await docker.Containers.CreateContainerAsync(new CreateContainerParameters()
             {
@@ -74,7 +72,7 @@ namespace Docker.Testify
                 PublishConnectionInfo();
 
                 Debug.WriteLine("Waiting service to start in the docker container...");
-                
+
                 var ready = false;
                 var expiryTime = DateTime.Now.Add(TimeOut);
 
@@ -111,7 +109,7 @@ namespace Docker.Testify
                 return;
 
             var stream = await docker.Images.PullImageAsync(new ImagesPullParameters() { Parent = name, Tag = tag }, null);
-            
+
             using (StreamReader reader = new StreamReader(stream))
             {
                 while (!reader.EndOfStream)
@@ -119,11 +117,11 @@ namespace Docker.Testify
             }
         }
 
-    	public void Dispose()
-    	{
-    	    docker.Containers.KillContainerAsync(containerId, new ContainerKillParameters()).Wait();
-    	    docker.Containers.RemoveContainerAsync(containerId, new ContainerRemoveParameters() { Force = true }).Wait();
-    	}
+        public void Dispose()
+        {
+            docker.Containers.KillContainerAsync(containerId, new ContainerKillParameters()).Wait();
+            docker.Containers.RemoveContainerAsync(containerId, new ContainerRemoveParameters() { Force = true }).Wait();
+        }
 
         private int GetFreePort()
         {
@@ -142,6 +140,6 @@ namespace Docker.Testify
                 throw new PortsInUseException();
 
             return result;
-	    }
+        }
     }
 }

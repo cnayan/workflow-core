@@ -77,15 +77,15 @@ namespace WorkflowCore.Models
     }
 
     public class WorkflowStep<TStepBody> : WorkflowStep
-        where TStepBody : IStepBody 
+        where TStepBody : IStepBody
     {
         public override Type BodyType => typeof(TStepBody);
     }
 
-	public enum ExecutionPipelineDirective 
-    { 
-        Next = 0, 
-        Defer = 1, 
-        EndWorkflow = 2 
+    public enum ExecutionPipelineDirective
+    {
+        Next = 0,
+        Defer = 1,
+        EndWorkflow = 2
     }
 }
