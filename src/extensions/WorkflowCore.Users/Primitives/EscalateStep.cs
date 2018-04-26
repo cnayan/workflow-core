@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 namespace WorkflowCore.Users.Primitives
 {
     public class EscalateStep : WorkflowStep<Escalate>
     {
-        
         public override void AfterWorkflowIteration(WorkflowExecutorResult executorResult, WorkflowDefinition defintion, WorkflowInstance workflow, ExecutionPointer executionPointer)
         {
             base.AfterWorkflowIteration(executorResult, defintion, workflow, executionPointer);

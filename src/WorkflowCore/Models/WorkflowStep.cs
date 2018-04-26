@@ -44,7 +44,7 @@ namespace WorkflowCore.Models
         }
 
         public virtual void AfterExecute(WorkflowExecutorResult executorResult, IStepExecutionContext context, ExecutionResult stepResult, ExecutionPointer executionPointer)
-        {            
+        {
         }
 
         public virtual void PrimeForRetry(ExecutionPointer pointer)

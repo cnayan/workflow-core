@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using WorkflowCore.Interface;
-using WorkflowCore.Primitives;
 using WorkflowCore.Users.Primitives;
-using WorkflowCore.Users.Services;
 
 namespace WorkflowCore.Users.Interface
 {
@@ -27,7 +23,5 @@ namespace WorkflowCore.Users.Interface
         /// <param name="action"></param>
         /// <returns></returns>
         IUserTaskBuilder<TData> WithEscalation(Expression<Func<TData, TimeSpan>> after, Expression<Func<TData, string>> newUser, Action<IWorkflowBuilder<TData>> action = null);
-
-
     }
 }

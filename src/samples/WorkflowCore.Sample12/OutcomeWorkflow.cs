@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WorkflowCore.Interface;
-using WorkflowCore.Models;
+﻿using WorkflowCore.Interface;
 
 namespace WorkflowCore.Sample12
-{    
+{
     public class OutcomeWorkflow : IWorkflow<MyData>
     {
         public string Id => "outcome-sample";
@@ -23,13 +19,8 @@ namespace WorkflowCore.Sample12
                     .When(data => 2).Do(then => then
                         .StartWith<PrintMessage>()
                             .Input(step => step.Message, data => "Outcome was 2")
-                    )                
+                    )
                 .Then<SayGoodbye>();
-        }        
-    }
-
-    public class MyData
-    {
-        public int Counter { get; set; }
+        }
     }
 }

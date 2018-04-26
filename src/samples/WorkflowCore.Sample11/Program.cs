@@ -17,8 +17,8 @@ namespace WorkflowCore.Sample11
             host.Start();
 
             Console.WriteLine("Starting workflow...");
-            string workflowId = host.StartWorkflow("if-sample", new MyData() { Counter = 4 }).Result;
-            
+            string workflowId = host.StartWorkflow("if-sample", new MyData { Counter = 4 }).Result;
+
             Console.ReadLine();
             host.Stop();
         }

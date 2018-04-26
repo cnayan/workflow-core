@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WorkflowCore.Interface;
-using WorkflowCore.Models;
+﻿using WorkflowCore.Interface;
 
 namespace WorkflowCore.Sample10
-{    
+{
     public class WhileWorkflow : IWorkflow<MyData>
     {
         public string Id => "While";
@@ -22,7 +18,7 @@ namespace WorkflowCore.Sample10
                             .Input(step => step.Value1, data => data.Counter)
                             .Output(data => data.Counter, step => step.Value2))
                 .Then<SayGoodbye>();
-        }        
+        }
     }
 
     public class MyData

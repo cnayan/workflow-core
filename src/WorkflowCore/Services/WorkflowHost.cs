@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
-using System.Reflection;
-using WorkflowCore.Exceptions;
 
 namespace WorkflowCore.Services
 {
     public class WorkflowHost : IWorkflowHost, IDisposable
-    {                
-        protected bool _shutdown = true;        
+    {
+        protected bool _shutdown = true;
         protected readonly IServiceProvider _serviceProvider;
 
         private readonly IEnumerable<IBackgroundTask> _backgroundTasks;
@@ -72,7 +68,7 @@ namespace WorkflowCore.Services
         }
 
         public void Start()
-        {            
+        {
             _shutdown = false;
             PersistenceStore.EnsureStoreExists();
             QueueProvider.Start().Wait();
@@ -86,26 +82,26 @@ namespace WorkflowCore.Services
 
         public void Stop()
         {
-            _shutdown = true;            
-            
+            _shutdown = true;
+
             Logger.LogInformation("Stopping background tasks");
             foreach (var th in _backgroundTasks)
                 th.Stop();
-            
+
             Logger.LogInformation("Worker tasks stopped");
-            
+
             QueueProvider.Stop();
             LockProvider.Stop();
         }
-        
-        public void RegisterWorkflow<TWorkflow>() 
+
+        public void RegisterWorkflow<TWorkflow>()
             where TWorkflow : IWorkflow, new()
         {
             TWorkflow wf = new TWorkflow();
             Registry.RegisterWorkflow(wf);
         }
 
-        public void RegisterWorkflow<TWorkflow, TData>() 
+        public void RegisterWorkflow<TWorkflow, TData>()
             where TWorkflow : IWorkflow<TData>, new()
             where TData : new()
         {
