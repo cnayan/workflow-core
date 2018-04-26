@@ -4,6 +4,12 @@
 
 Workflow Core is a light weight workflow engine targeting .NET Standard.  Think: long running processes with multiple tasks that need to track state.  It supports pluggable persistence and concurrency providers to allow for multi-node clusters.
 
+## .NET Version Targets
+
+Current targets are:
+* .NET Core: 2.0
+* .NET Standard: 2.0
+
 ## Documentation
 
 See [Tutorial here.](https://github.com/danielgerlag/workflow-core/wiki)
