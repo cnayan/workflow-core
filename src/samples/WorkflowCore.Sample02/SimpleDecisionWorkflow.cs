@@ -20,17 +20,17 @@ namespace WorkflowCore.Sample02
                 .Then<RandomOutput>(randomOutput =>
                 {
                     randomOutput
-                        .When(0)
-                            .Then<CustomMessage>(cm =>
-                            {
-                                cm.Name("Print custom message");
-                                cm.Input(step => step.Message, data => "Looping back....");
-                            })
-                            .Then(randomOutput);  //loop back to randomOutput
+                        .When(_ => 0).Do(then =>
+                            then
+                                .StartWith(ctx => ctx.Step.Name = "Print custom message")
+                                .Then<CustomMessage>()
+                                    .Input(input => input.Message, _ => "Looping back....")
+                                .Then(randomOutput)  //loop back to randomOutput
+                        );
 
                     randomOutput
-                        .When(1)
-                            .Then<GoodbyeWorld>();
+                        .When(_ => 1)
+                        .Do(then => then.StartWith<GoodbyeWorld>());
                 });
         }
     }
