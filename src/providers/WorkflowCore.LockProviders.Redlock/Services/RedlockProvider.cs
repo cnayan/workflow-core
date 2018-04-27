@@ -22,15 +22,12 @@ namespace WorkflowCore.LockProviders.Redlock.Services
 
             foreach (var ep in endpoints)
                 redlockEndpoints.Add(ep);
-            
 
             _redlockFactory = RedLockFactory.Create(redlockEndpoints);
-
         }
 
         public async Task<bool> AcquireLock(string Id, CancellationToken cancellationToken)
         {
-            
             var redLock = await _redlockFactory.CreateLockAsync(Id, _lockTimeout);
 
             if (redLock.IsAcquired)

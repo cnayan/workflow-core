@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using WorkflowCore.Interface;
 
 namespace WorkflowCore.Models
@@ -9,45 +8,20 @@ namespace WorkflowCore.Models
     {
         public abstract Type BodyType { get; }
 
+        public virtual List<int> Children { get; set; } = new List<int>();
+        public virtual int? CompensationStepId { get; set; }
+        public virtual WorkflowErrorHandling? ErrorBehavior { get; set; }
         public virtual int Id { get; set; }
-
+        public virtual List<DataMapping> Inputs { get; set; } = new List<DataMapping>();
         public virtual string Name { get; set; }
-
+        public virtual List<StepOutcome> Outcomes { get; set; } = new List<StepOutcome>();
+        public virtual List<DataMapping> Outputs { get; set; } = new List<DataMapping>();
+        public virtual bool ResumeChildrenAfterCompensation => true;
+        public virtual TimeSpan? RetryInterval { get; set; }
+        public virtual bool RevertChildrenAfterCompensation => false;
         public virtual string Tag { get; set; }
 
-        public virtual List<int> Children { get; set; } = new List<int>();
-
-        public virtual List<StepOutcome> Outcomes { get; set; } = new List<StepOutcome>();
-
-        public virtual List<DataMapping> Inputs { get; set; } = new List<DataMapping>();
-
-        public virtual List<DataMapping> Outputs { get; set; } = new List<DataMapping>();
-
-        public virtual WorkflowErrorHandling? ErrorBehavior { get; set; }
-
-        public virtual TimeSpan? RetryInterval { get; set; }
-
-        public virtual int? CompensationStepId { get; set; }
-
-        public virtual bool ResumeChildrenAfterCompensation => true;
-
-        public virtual bool RevertChildrenAfterCompensation => false;
-
-        public virtual ExecutionPipelineDirective InitForExecution(WorkflowExecutorResult executorResult, WorkflowDefinition defintion, WorkflowInstance workflow, ExecutionPointer executionPointer)
-        {
-            return ExecutionPipelineDirective.Next;
-        }
-
-        public virtual ExecutionPipelineDirective BeforeExecute(WorkflowExecutorResult executorResult, IStepExecutionContext context, ExecutionPointer executionPointer, IStepBody body)
-        {
-            return ExecutionPipelineDirective.Next;
-        }
-
         public virtual void AfterExecute(WorkflowExecutorResult executorResult, IStepExecutionContext context, ExecutionResult stepResult, ExecutionPointer executionPointer)
-        {
-        }
-
-        public virtual void PrimeForRetry(ExecutionPointer pointer)
         {
         }
 
@@ -63,29 +37,48 @@ namespace WorkflowCore.Models
         {
         }
 
+        public virtual ExecutionPipelineDirective BeforeExecute(WorkflowExecutorResult executorResult, IStepExecutionContext context, ExecutionPointer executionPointer, IStepBody body)
+        {
+            return ExecutionPipelineDirective.Next;
+        }
+
         public virtual IStepBody ConstructBody(IServiceProvider serviceProvider)
         {
             IStepBody body = (serviceProvider.GetService(BodyType) as IStepBody);
             if (body == null)
             {
-                var stepCtor = BodyType.GetConstructor(new Type[] { });
+                object[] parameters = null;
+                var stepCtor = BodyType.GetConstructor(new Type[] { typeof(IServiceProvider) });
                 if (stepCtor != null)
-                    body = (stepCtor.Invoke(null) as IStepBody);
+                {
+                    parameters = new object[] { serviceProvider };
+                }
+                else
+                {
+                    stepCtor = BodyType.GetConstructor(new Type[] { });
+                }
+
+                if (stepCtor != null)
+                {
+                    body = (stepCtor.Invoke(parameters) as IStepBody);
+                }
             }
+
             return body;
+        }
+
+        public virtual ExecutionPipelineDirective InitForExecution(WorkflowExecutorResult executorResult, WorkflowDefinition defintion, WorkflowInstance workflow, ExecutionPointer executionPointer)
+        {
+            return ExecutionPipelineDirective.Next;
+        }
+
+        public virtual void PrimeForRetry(ExecutionPointer pointer)
+        {
         }
     }
 
-    public class WorkflowStep<TStepBody> : WorkflowStep
-        where TStepBody : IStepBody
+    public class WorkflowStep<TStepBody> : WorkflowStep where TStepBody : IStepBody
     {
         public override Type BodyType => typeof(TStepBody);
-    }
-
-    public enum ExecutionPipelineDirective
-    {
-        Next = 0,
-        Defer = 1,
-        EndWorkflow = 2
     }
 }

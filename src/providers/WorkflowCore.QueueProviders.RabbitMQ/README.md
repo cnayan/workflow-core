@@ -17,6 +17,6 @@ PM> Install-Package WorkflowCore.QueueProviders.RabbitMQ -Pre
 Use the .UseRabbitMQ extension method when building your service provider.
 
 ```C#
-services.AddWorkflow(x => x.UseRabbitMQ(new ConnectionFactory() { HostName = "localhost" });
+services.AddWorkflow(x => x.UseRabbitMQ(new ConnectionFactory() { HostName = "localhost" }));
 
 ```

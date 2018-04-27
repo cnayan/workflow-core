@@ -22,7 +22,7 @@ namespace WorkflowCore.Interface
         {
             var newStep = new UserStepContainer();
             newStep.Principal = assigner;
-            newStep.UserPrompt = userPrompt;            
+            newStep.UserPrompt = userPrompt;
             builder.WorkflowBuilder.AddStep(newStep);
             var stepBuilder = new StepBuilder<TData, UserStep>(builder.WorkflowBuilder, newStep);
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +17,7 @@ namespace WorkflowCore.Services
         private readonly IQueueProvider _queueProvider;
         private readonly IExecutionPointerFactory _pointerFactory;
         private readonly ILogger _logger;
-        
+
         public WorkflowController(IPersistenceProvider persistenceStore, IDistributedLockProvider lockProvider, IWorkflowRegistry registry, IQueueProvider queueProvider, IExecutionPointerFactory pointerFactory, ILoggerFactory loggerFactory)
         {
             _persistenceStore = persistenceStore;
@@ -39,7 +38,7 @@ namespace WorkflowCore.Services
             return StartWorkflow<object>(workflowId, version, data);
         }
 
-        public Task<string> StartWorkflow<TData>(string workflowId, TData data = null) 
+        public Task<string> StartWorkflow<TData>(string workflowId, TData data = null)
             where TData : class
         {
             return StartWorkflow<TData>(workflowId, null, data);
@@ -48,7 +47,6 @@ namespace WorkflowCore.Services
         public async Task<string> StartWorkflow<TData>(string workflowId, int? version, TData data = null)
             where TData : class
         {
-            
             var def = _registry.GetDefinition(workflowId, version);
             if (def == null)
             {
@@ -81,17 +79,16 @@ namespace WorkflowCore.Services
         public async Task PublishEvent(string eventName, string eventKey, object eventData, DateTime? effectiveDate = null)
         {
             _logger.LogDebug("Creating event {0} {1}", eventName, eventKey);
+
             Event evt = new Event();
-
-            if (effectiveDate.HasValue)
-                evt.EventTime = effectiveDate.Value.ToUniversalTime();
-            else
-                evt.EventTime = DateTime.Now.ToUniversalTime();
-
+            evt.EventTime = effectiveDate.HasValue
+                ? effectiveDate.Value.ToUniversalTime()
+                : DateTime.Now.ToUniversalTime();
             evt.EventData = eventData;
             evt.EventKey = eventKey;
             evt.EventName = eventName;
             evt.IsProcessed = false;
+
             string eventId = await _persistenceStore.CreateEvent(evt);
 
             await _queueProvider.QueueWork(eventId, QueueType.Event);
@@ -101,7 +98,7 @@ namespace WorkflowCore.Services
         {
             if (!await _lockProvider.AcquireLock(workflowId, new CancellationToken()))
                 return false;
-            
+
             try
             {
                 var wf = await _persistenceStore.GetWorkflowInstance(workflowId);
@@ -168,7 +165,7 @@ namespace WorkflowCore.Services
                 await _lockProvider.ReleaseLock(workflowId);
             }
         }
-        
+
         public void RegisterWorkflow<TWorkflow>()
             where TWorkflow : IWorkflow, new()
         {
