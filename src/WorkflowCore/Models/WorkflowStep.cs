@@ -60,7 +60,7 @@ namespace WorkflowCore.Models
 
                 if (stepCtor != null)
                 {
-                    body = (stepCtor.Invoke(parameters) as IStepBody);
+                    body = stepCtor.Invoke(parameters) as IStepBody;
                 }
             }
 
