@@ -7,6 +7,7 @@ namespace WorkflowCore.Interface
         where TStepBody : IStepBody
     {
         IParallelStepBuilder<TData, TStepBody> Do(Action<IWorkflowBuilder<TData>> builder);
+        IParallelStepBuilder<TData, TStepBody> Do<TStep>() where TStep : IStepBody;
         IStepBuilder<TData, Sequence> Join();
     }
 }

@@ -2,6 +2,7 @@
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 using WorkflowCore.Primitives;
+using WorkflowCore.Extensions;
 
 namespace WorkflowCore.Services
 {
@@ -11,10 +12,6 @@ namespace WorkflowCore.Services
         private readonly IStepBuilder<TData, Sequence> _referenceBuilder;
         private readonly IStepBuilder<TData, TStepBody> _stepBuilder;
 
-        public IWorkflowBuilder<TData> WorkflowBuilder { get; private set; }
-
-        public WorkflowStep<TStepBody> Step { get; set; }
-        
         public ParallelStepBuilder(IWorkflowBuilder<TData> workflowBuilder, IStepBuilder<TData, TStepBody> stepBuilder, IStepBuilder<TData, Sequence> referenceBuilder)
         {
             WorkflowBuilder = workflowBuilder;
@@ -22,15 +19,32 @@ namespace WorkflowCore.Services
             _stepBuilder = stepBuilder;
             _referenceBuilder = referenceBuilder;
         }
-        
+
+        public WorkflowStep<TStepBody> Step { get; set; }
+        public IWorkflowBuilder<TData> WorkflowBuilder { get; private set; }
+
         public IParallelStepBuilder<TData, TStepBody> Do(Action<IWorkflowBuilder<TData>> builder)
         {
             var lastStep = WorkflowBuilder.LastStep;
             builder.Invoke(WorkflowBuilder);
-            
+
             if (lastStep == WorkflowBuilder.LastStep)
                 throw new NotSupportedException("Empty Do block not supported");
-            
+
+            Step.Children.Add(lastStep + 1); //TODO: make more elegant
+
+            return this;
+        }
+
+        public IParallelStepBuilder<TData, TStepBody> Do<TStep>() where TStep : IStepBody
+        {
+            var lastStep = WorkflowBuilder.LastStep;
+
+            WorkflowBuilder.AddStep<TData, TStep>();
+
+            if (lastStep == WorkflowBuilder.LastStep)
+                throw new NotSupportedException("Empty Do block not supported");
+
             Step.Children.Add(lastStep + 1); //TODO: make more elegant
 
             return this;
