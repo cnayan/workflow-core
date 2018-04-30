@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WorkflowCore.Interface;
+﻿using WorkflowCore.Interface;
 using WorkflowCore.Sample06.Steps;
 
 namespace WorkflowCore.Sample06
-{    
+{
     public class MultipleOutcomeWorkflow : IWorkflow
     {
         public string Id => "MultipleOutcomeWorkflow";

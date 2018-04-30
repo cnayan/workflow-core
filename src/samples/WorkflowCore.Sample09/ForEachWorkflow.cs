@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using WorkflowCore.Interface;
-using WorkflowCore.Models;
 
 namespace WorkflowCore.Sample09
-{    
+{
     public class ForEachWorkflow : IWorkflow
     {
         public string Id => "Foreach";

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace WorkflowCore.Models
 {
@@ -45,7 +44,6 @@ namespace WorkflowCore.Models
         public PointerStatus Status { get; set; } = PointerStatus.Legacy;
         
         public Stack<string> Scope { get; set; } = new Stack<string>();
-                        
     }
 
     public enum PointerStatus

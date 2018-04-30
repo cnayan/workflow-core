@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WorkflowCore.Interface;
-using WorkflowCore.Models;
+﻿using WorkflowCore.Interface;
 
 namespace WorkflowCore.Sample13
-{    
+{
     public class ParallelWorkflow : IWorkflow<MyData>
     {
         public string Id => "parallel-sample";

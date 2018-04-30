@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using WorkflowCore.Interface;
 using FluentAssertions;
 using NUnit.Framework;
 
 namespace WorkflowCore.TestAssets.LockProvider
-{    
+{
     public abstract class DistributedLockProviderTests
     {
         protected IDistributedLockProvider Subject;

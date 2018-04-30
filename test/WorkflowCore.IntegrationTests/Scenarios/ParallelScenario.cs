@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 using Xunit;
 using FluentAssertions;
-using System.Linq;
 using WorkflowCore.Testing;
 
 namespace WorkflowCore.IntegrationTests.Scenarios

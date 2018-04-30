@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using WorkflowCore.Interface;
 
 namespace WorkflowCore.Sample16
-{    
+{
     class ScheduleWorkflow : IWorkflow
     {
         public string Id => "schedule-sample";
