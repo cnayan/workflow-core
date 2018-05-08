@@ -1,7 +1,6 @@
 ﻿#region using
 
 using System;
-using System.Linq;
 using WorkflowCore.Interface;
 using WorkflowCore.QueueProviders.SqlServer.Interfaces;
 using WorkflowCore.QueueProviders.SqlServer.Models;

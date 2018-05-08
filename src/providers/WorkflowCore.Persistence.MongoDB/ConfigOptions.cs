@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WorkflowCore.Persistence.MongoDB
+﻿namespace WorkflowCore.Persistence.MongoDB
 {
     public class ConfigOptions
     {

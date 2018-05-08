@@ -25,3 +25,14 @@ builder
     .Join()
     .Then<SayGoodbye>();
 ```
+
+Another syntax for executing single consolidated step example:
+```c#
+builder
+    .StartWith<SayHello>()
+    .Parallel()
+        .Do<DoStep1>()
+        .Do<DoStep2>()
+    .Join()
+    .Then<SayGoodbye>();
+```

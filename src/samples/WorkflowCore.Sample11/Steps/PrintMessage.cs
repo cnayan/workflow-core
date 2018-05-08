@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 namespace WorkflowCore.Sample11
-{    
+{
     public class PrintMessage : StepBody
     {
         public string Message { get; set; }

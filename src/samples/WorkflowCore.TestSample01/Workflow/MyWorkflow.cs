@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WorkflowCore.Interface;
+﻿using WorkflowCore.Interface;
 
 namespace WorkflowCore.TestSample01.Workflow
 {

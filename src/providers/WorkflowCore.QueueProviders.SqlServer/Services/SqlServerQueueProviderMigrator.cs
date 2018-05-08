@@ -1,9 +1,6 @@
 ﻿#region using
 
-using System;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 using WorkflowCore.Interface;
 using WorkflowCore.QueueProviders.SqlServer.Interfaces;
@@ -11,7 +8,7 @@ using WorkflowCore.QueueProviders.SqlServer.Interfaces;
 #endregion
 
 namespace WorkflowCore.QueueProviders.SqlServer.Services
-{    
+{
 
     public class SqlServerQueueProviderMigrator : ISqlServerQueueProviderMigrator
     {

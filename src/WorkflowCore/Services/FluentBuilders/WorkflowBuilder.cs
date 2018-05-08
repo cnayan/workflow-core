@@ -4,6 +4,7 @@ using System.Linq;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 using WorkflowCore.Primitives;
+using WorkflowCore.Extensions;
 
 namespace WorkflowCore.Services
 {
@@ -38,7 +39,7 @@ namespace WorkflowCore.Services
         {
             step.Id = Steps.Count();
             Steps.Add(step);
-        }               
+        }
 
     }
 
@@ -60,16 +61,14 @@ namespace WorkflowCore.Services
         public IStepBuilder<TData, TStep> StartWith<TStep>(Action<IStepBuilder<TData, TStep>> stepSetup = null)
             where TStep : IStepBody
         {
-            WorkflowStep<TStep> step = new WorkflowStep<TStep>();
-            var stepBuilder = new StepBuilder<TData, TStep>(this, step);
+            var step = this.AddStep<TData, TStep>();
 
+            var stepBuilder = new StepBuilder<TData, TStep>(this, step);
             if (stepSetup != null)
             {
                 stepSetup.Invoke(stepBuilder);
             }
 
-            step.Name = step.Name ?? typeof(TStep).Name;
-            AddStep(step);
             return stepBuilder;
         }
 
@@ -103,5 +102,4 @@ namespace WorkflowCore.Services
             return this;
         }
     }
-        
 }
