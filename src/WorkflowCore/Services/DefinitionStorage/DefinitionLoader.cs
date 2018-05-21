@@ -20,7 +20,7 @@ namespace WorkflowCore.Services.DefinitionStorage
         {
             _registry = registry;
         }
-                        
+
         public WorkflowDefinition LoadDefinition(string json)
         {
             var source = JsonConvert.DeserializeObject<DefinitionSourceV1>(json);
@@ -54,7 +54,7 @@ namespace WorkflowCore.Services.DefinitionStorage
         {
             var result = new List<WorkflowStep>();
             int i = 0;
-            var stack = new Stack<StepSourceV1>(source.Reverse<StepSourceV1>());
+            var stack = new Stack<StepSourceV1>(source.Reverse());
             var parents = new List<StepSourceV1>();
             var compensatables = new List<StepSourceV1>();
 
@@ -92,11 +92,8 @@ namespace WorkflowCore.Services.DefinitionStorage
 
                 if (nextStep.Do != null)
                 {
-                    foreach (var branch in nextStep.Do)
-                    {
-                        foreach (var child in branch.Reverse<StepSourceV1>())
-                            stack.Push(child);
-                    }
+                    foreach (var child in nextStep.Do.Reverse<StepSourceV1>())
+                        stack.Push(child);
 
                     if (nextStep.Do.Count > 0)
                         parents.Add(nextStep);
@@ -115,48 +112,54 @@ namespace WorkflowCore.Services.DefinitionStorage
                     targetStep.Outcomes.Add(new StepOutcome() { Tag = $"{nextStep.NextStepId}" });
 
                 result.Add(targetStep);
-                
+
                 i++;
             }
 
             foreach (var step in result)
             {
-                if (result.Any(x => x.Tag == step.Tag && x.Id != step.Id))
+                if (result.Any(x => string.Compare(x.Tag, step.Tag, true) == 0 && x.Id != step.Id))
                     throw new WorkflowDefinitionLoadException($"Duplicate step Id {step.Tag}");
 
                 foreach (var outcome in step.Outcomes)
                 {
-                    if (result.All(x => x.Tag != outcome.Tag))
-                        throw new WorkflowDefinitionLoadException($"Cannot find step id {outcome.Tag}");
-
-                    outcome.NextStep = result.Single(x => x.Tag == outcome.Tag).Id;
+                    if (result.All(x => string.Compare(x.Tag, outcome.Tag, true) != 0))
+                    {
+                        //throw new WorkflowDefinitionLoadException($"Cannot find step id {outcome.Tag}");
+                        outcome.NextStep = -1;
+                    }
+                    else
+                    {
+                        outcome.NextStep = result.Single(x => string.Compare(x.Tag, outcome.Tag, true) == 0).Id;
+                    }
                 }
             }
 
             foreach (var parent in parents)
             {
-                var target = result.Single(x => x.Tag == parent.Id);
-                foreach (var branch in parent.Do)
-                {
-                    var childTags = branch.Select(x => x.Id).ToList();
-                    target.Children.AddRange(result
-                        .Where(x => childTags.Contains(x.Tag))
-                        .OrderBy(x => x.Id)
-                        .Select(x => x.Id)
-                        .Take(1)
-                        .ToList());
-                }
+                var target = result.Single(x => string.Compare(x.Tag, parent.Id, true) == 0);
+
+                var childTags = parent.Do.Select(x => x.Id).ToArray();
+                target.Children.AddRange(result
+                    .Where(x => childTags.Contains(x.Tag))
+                    .OrderBy(x => x.Id)
+                    .Select(x => x.Id)
+                    .Take(1)
+                    .ToArray());
             }
 
             foreach (var item in compensatables)
             {
-                var target = result.Single(x => x.Tag == item.Id);
+                var target = result.Single(x => string.Compare(x.Tag, item.Id, true) == 0);
+
                 var tag = item.CompensateWith.Select(x => x.Id).FirstOrDefault();
                 if (tag != null)
                 {
-                    var compStep = result.FirstOrDefault(x => x.Tag == tag);
+                    var compStep = result.FirstOrDefault(x => string.Compare(x.Tag, tag, true) == 0);
                     if (compStep != null)
+                    {
                         target.CompensationStepId = compStep.Id;
+                    }
                 }
             }
 
@@ -169,7 +172,7 @@ namespace WorkflowCore.Services.DefinitionStorage
             {
                 var dataParameter = Expression.Parameter(dataType, "data");
                 var contextParameter = Expression.Parameter(typeof(IStepExecutionContext), "context");
-                var sourceExpr = DynamicExpressionParser.ParseLambda(new [] { dataParameter, contextParameter }, typeof(object), input.Value);
+                var sourceExpr = DynamicExpressionParser.ParseLambda(new[] { dataParameter, contextParameter }, typeof(object), input.Value);
                 var targetExpr = Expression.Property(Expression.Parameter(stepType), input.Key);
 
                 step.Inputs.Add(new DataMapping()

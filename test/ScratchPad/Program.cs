@@ -18,7 +18,7 @@ namespace ScratchPad
             //start the workflow host
             var host = serviceProvider.GetService<IWorkflowHost>();
             var loader = serviceProvider.GetService<IDefinitionLoader>();
-            var str = ScratchPad.Properties.Resources.HelloWorld; //Encoding.UTF8.GetString(ScratchPad.Properties.Resources.HelloWorld);
+            var str = Properties.Resources.HelloWorld; //Encoding.UTF8.GetString(ScratchPad.Properties.Resources.HelloWorld);
 
             loader.LoadDefinition(str);
 

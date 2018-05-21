@@ -6,7 +6,7 @@ namespace WorkflowCore.Models.DefinitionStorage.v1
     public class StepSourceV1
     {
         public string StepType { get; set; }
-        
+
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -17,7 +17,7 @@ namespace WorkflowCore.Models.DefinitionStorage.v1
 
         public TimeSpan? RetryInterval { get; set; }
 
-        public List<List<StepSourceV1>> Do { get; set; } = new List<List<StepSourceV1>>();
+        public List<StepSourceV1> Do { get; set; } = new List<StepSourceV1>();
 
         public List<StepSourceV1> CompensateWith { get; set; } = new List<StepSourceV1>();
 
@@ -28,7 +28,5 @@ namespace WorkflowCore.Models.DefinitionStorage.v1
         public Dictionary<string, string> Inputs { get; set; } = new Dictionary<string, string>();
 
         public Dictionary<string, string> Outputs { get; set; } = new Dictionary<string, string>();
-
-        
     }
 }
