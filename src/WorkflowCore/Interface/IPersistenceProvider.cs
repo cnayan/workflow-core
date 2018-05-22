@@ -23,7 +23,7 @@ namespace WorkflowCore.Interface
 
         Task<string> CreateEventSubscription(EventSubscription subscription);
 
-        Task<IEnumerable<EventSubscription>> GetSubcriptions(string eventName, string eventKey, DateTime asOf);
+        Task<IEnumerable<EventSubscription>> GetSubscriptions(string eventName, string eventKey, DateTime asOf);
 
         Task TerminateSubscription(string eventSubscriptionId);
 

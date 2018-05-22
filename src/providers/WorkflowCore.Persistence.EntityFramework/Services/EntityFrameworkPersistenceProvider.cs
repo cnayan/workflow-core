@@ -164,7 +164,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Services
             _mutex.WaitOne();
             try
             {
-                var uid = new Guid(Id);
+                var uid = Id;// new Guid(Id);
                 var raw = await Set<PersistedWorkflow>()
                     .Include(wf => wf.ExecutionPointers)
                     .ThenInclude(ep => ep.ExtensionAttributes)
@@ -187,7 +187,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Services
             _mutex.WaitOne();
             try
             {
-                var uid = new Guid(workflow.Id);
+                var uid = workflow.Id;// new Guid(workflow.Id);
                 var existingEntity = await Set<PersistedWorkflow>()
                     .Where(x => x.InstanceId == uid)
                     .Include(wf => wf.ExecutionPointers)
@@ -219,7 +219,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Services
             _mutex.WaitOne();
             try
             {
-                var uid = new Guid(eventSubscriptionId);
+                var uid = eventSubscriptionId;// new Guid(eventSubscriptionId);
                 var existing = await Set<PersistedSubscription>().FirstAsync(x => x.SubscriptionId == uid);
                 Set<PersistedSubscription>().Remove(existing);
                 await SaveChangesAsync();
@@ -245,7 +245,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Services
             }
         }
 
-        public async Task<IEnumerable<EventSubscription>> GetSubcriptions(string eventName, string eventKey, DateTime asOf)
+        public async Task<IEnumerable<EventSubscription>> GetSubscriptions(string eventName, string eventKey, DateTime asOf)
         {
             _mutex.WaitOne();
             try
@@ -288,7 +288,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Services
             {
                 Guid uid = new Guid(id);
                 var raw = await Set<PersistedEvent>()
-                    .FirstAsync(x => x.EventId == uid);
+                    .FirstAsync(x => x.EventId == id);
 
                 if (raw == null)
                     return null;
@@ -329,7 +329,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Services
             {
                 var uid = new Guid(id);
                 var existingEntity = await Set<PersistedEvent>()
-                    .Where(x => x.EventId == uid)
+                    .Where(x => x.EventId == id)
                     .AsTracking()
                     .FirstAsync();
 
@@ -374,7 +374,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Services
             {
                 var uid = new Guid(id);
                 var existingEntity = await Set<PersistedEvent>()
-                    .Where(x => x.EventId == uid)
+                    .Where(x => x.EventId == id)
                     .AsTracking()
                     .FirstAsync();
 

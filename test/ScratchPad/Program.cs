@@ -26,7 +26,6 @@ namespace ScratchPad
             host.Start();
 
             host.StartWorkflow("HelloWorld", 1, new MyDataClass() { Value3 = "hi there" });
-                        
 
             Console.ReadLine();
             host.Stop();
@@ -49,63 +48,6 @@ namespace ScratchPad
             return serviceProvider;
         }
 
-    }
-
-    public class HelloWorld : StepBody
-    {
-        public override ExecutionResult Run(IStepExecutionContext context)
-        {
-            Console.WriteLine("Hello world");
-            return ExecutionResult.Next();
-        }
-    }
-    public class GoodbyeWorld : StepBody
-    {
-        public override ExecutionResult Run(IStepExecutionContext context)
-        {
-            Console.WriteLine("Goodbye world");
-            return ExecutionResult.Next();
-        }
-    }
-
-    public class Throw : StepBody
-    {
-        public override ExecutionResult Run(IStepExecutionContext context)
-        {
-            Console.WriteLine("throwing...");
-            throw new Exception("up");
-        }
-    }
-
-    public class PrintMessage : StepBody
-    {
-        public string Message { get; set; }
-
-        public override ExecutionResult Run(IStepExecutionContext context)
-        {
-            Console.WriteLine(Message);
-            return ExecutionResult.Next();
-        }
-    }
-
-    public class GenerateMessage : StepBody
-    {
-        public string Message { get; set; }
-
-        public override ExecutionResult Run(IStepExecutionContext context)
-        {
-            Message = "Generated message";
-            return ExecutionResult.Next();
-        }
-    }
-
-    public class MyDataClass
-    {
-        public int Value1 { get; set; }
-
-        public int Value2 { get; set; }
-
-        public string Value3 { get; set; }
     }
 }
 

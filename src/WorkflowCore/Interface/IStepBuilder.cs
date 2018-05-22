@@ -10,7 +10,7 @@ namespace WorkflowCore.Interface
         where TStepBody : IStepBody
     {
 
-        IWorkflowBuilder<TData> WorkflowBuilder { get; }        
+        IWorkflowBuilder<TData> WorkflowBuilder { get; }
 
         WorkflowStep<TStepBody> Step { get; set; }
 
@@ -213,6 +213,5 @@ namespace WorkflowCore.Interface
         /// <param name="builder"></param>
         /// <returns></returns>
         IStepBuilder<TData, TStepBody> CompensateWithSequence(Action<IWorkflowBuilder<TData>> builder);
-        
     }
 }

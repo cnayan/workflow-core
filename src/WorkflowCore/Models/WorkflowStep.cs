@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using WorkflowCore.Interface;
+using WorkflowCore.Extensions;
 
 namespace WorkflowCore.Models
 {
+    [System.Diagnostics.DebuggerDisplay("WorkflowStep {Id}, {Name}")]
     public abstract class WorkflowStep
     {
         public abstract Type BodyType { get; }
@@ -44,24 +46,10 @@ namespace WorkflowCore.Models
 
         public virtual IStepBody ConstructBody(IServiceProvider serviceProvider)
         {
-            IStepBody body = (serviceProvider.GetService(BodyType) as IStepBody);
+            IStepBody body = serviceProvider.GetService(BodyType) as IStepBody;
             if (body == null)
             {
-                object[] parameters = null;
-                var stepCtor = BodyType.GetConstructor(new Type[] { typeof(IServiceProvider) });
-                if (stepCtor != null)
-                {
-                    parameters = new object[] { serviceProvider };
-                }
-                else
-                {
-                    stepCtor = BodyType.GetConstructor(new Type[] { });
-                }
-
-                if (stepCtor != null)
-                {
-                    body = stepCtor.Invoke(parameters) as IStepBody;
-                }
+                body = BodyType.CreateInstance(serviceProvider) as IStepBody;
             }
 
             return body;

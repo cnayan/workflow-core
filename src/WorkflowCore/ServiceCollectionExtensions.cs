@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IQueueProvider>(options.QueueFactory);
             services.AddSingleton<IDistributedLockProvider>(options.LockFactory);
             services.AddSingleton<IWorkflowRegistry, WorkflowRegistry>();
-            services.AddSingleton<WorkflowOptions>(options);
+            services.AddSingleton(options);
 
             services.AddTransient<IBackgroundTask, WorkflowConsumer>();
             services.AddTransient<IBackgroundTask, EventConsumer>();
@@ -46,4 +46,3 @@ namespace Microsoft.Extensions.DependencyInjection
         }
     }
 }
-

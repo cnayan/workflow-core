@@ -47,7 +47,7 @@ namespace WorkflowCore.Services
         public async Task<string> StartWorkflow<TData>(string workflowId, int? version, TData data = null)
             where TData : class
         {
-            var def = _registry.GetDefinition(workflowId, version);
+            WorkflowDefinition def = _registry.GetDefinition(workflowId, version);
             if (def == null)
             {
                 throw new WorkflowNotRegisteredException(workflowId, version);

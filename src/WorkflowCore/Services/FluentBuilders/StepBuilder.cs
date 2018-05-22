@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq.Expressions;
+using WorkflowCore.Extensions;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 using WorkflowCore.Primitives;
@@ -92,6 +93,14 @@ namespace WorkflowCore.Services
         public IStepBuilder<TData, TStepBody> Do(Action<IWorkflowBuilder<TData>> builder)
         {
             builder.Invoke(WorkflowBuilder);
+            Step.Children.Add(Step.Id + 1); //TODO: make more elegant
+
+            return this;
+        }
+
+        public IStepBuilder<TData, TStepBody> Do<TStep>() where TStep : IStepBody
+        {
+            WorkflowBuilder.AddStep<TData, TStep>();
             Step.Children.Add(Step.Id + 1); //TODO: make more elegant
 
             return this;

@@ -2,9 +2,10 @@
 
 namespace WorkflowCore.Models
 {
+    [System.Diagnostics.DebuggerDisplay("{Id}" + ", " + "{EventName}" + ", " + "{EventKey}" + ", " + "{EventTime}")]
     public class Event
     {
-        public string Id { get; set; }        
+        public string Id { get; set; }
 
         public string EventName { get; set; }
 

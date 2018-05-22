@@ -9,7 +9,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Models
         public long PersistenceId { get; set; }
 
         [MaxLength(200)]
-        public Guid SubscriptionId { get; set; }
+        public string SubscriptionId { get; set; }
 
         [MaxLength(200)]
         public string WorkflowId { get; set; }

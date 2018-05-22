@@ -239,6 +239,5 @@ namespace WorkflowCore.Services
                 workflow.CompleteTime = _datetimeProvider.Now.ToUniversalTime();
             }
         }
-        
     }
 }

@@ -34,7 +34,7 @@ namespace WorkflowCore.Services.BackgroundTasks
                     var evt = await _persistenceStore.GetEvent(itemId);
                     if (evt.EventTime <= _datetimeProvider.Now.ToUniversalTime())
                     {
-                        var subs = await _persistenceStore.GetSubcriptions(evt.EventName, evt.EventKey, evt.EventTime);
+                        var subs = await _persistenceStore.GetSubscriptions(evt.EventName, evt.EventKey, evt.EventTime);
                         var success = true;
 
                         foreach (var sub in subs.ToList())
@@ -58,7 +58,7 @@ namespace WorkflowCore.Services.BackgroundTasks
                 Logger.LogInformation($"Event locked {itemId}");
             }
         }
-        
+
         private async Task<bool> SeedSubscription(Event evt, EventSubscription sub, CancellationToken cancellationToken)
         {
             if (await _lockProvider.AcquireLock(sub.WorkflowId, cancellationToken))

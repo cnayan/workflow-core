@@ -7,8 +7,8 @@ namespace WorkflowCore.Persistence.EntityFramework.Models
     {
         [Key]
         public long PersistenceId { get; set; }
-
-        public Guid EventId { get; set; }                
+        [MaxLength(2000)]
+        public string EventId { get; set; }                
 
         [MaxLength(200)]
         public string EventName { get; set; }

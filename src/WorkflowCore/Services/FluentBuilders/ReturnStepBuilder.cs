@@ -1,4 +1,5 @@
 ﻿using System;
+using WorkflowCore.Extensions;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -24,6 +25,14 @@ namespace WorkflowCore.Services
         public IStepBuilder<TData, TParentStep> Do(Action<IWorkflowBuilder<TData>> builder)
         {
             builder.Invoke(WorkflowBuilder);
+            Step.Children.Add(Step.Id + 1); //TODO: make more elegant
+
+            return _referenceBuilder;
+        }
+
+        public IStepBuilder<TData, TParentStep> Do<TStep>() where TStep : IStepBody
+        {
+            WorkflowBuilder.AddStep<TData, TStep>();
             Step.Children.Add(Step.Id + 1); //TODO: make more elegant
 
             return _referenceBuilder;

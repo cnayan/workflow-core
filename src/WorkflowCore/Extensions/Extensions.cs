@@ -1,4 +1,5 @@
-﻿using WorkflowCore.Interface;
+﻿using System;
+using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 namespace WorkflowCore.Extensions
@@ -17,6 +18,27 @@ namespace WorkflowCore.Extensions
             step.Name = step.Name ?? typeof(TStep).Name;
             workflowBuilder.AddStep(step);
             return step;
+        }
+
+        public static object CreateInstance(this Type t, IServiceProvider serviceProvider)
+        {
+            object[] parameters = null;
+            var stepCtor = t.GetConstructor(new Type[] { typeof(IServiceProvider) });
+            if (stepCtor != null)
+            {
+                parameters = new object[] { serviceProvider };
+            }
+            else
+            {
+                stepCtor = t.GetConstructor(new Type[] { });
+            }
+
+            if (stepCtor != null)
+            {
+                return stepCtor.Invoke(parameters) as IStepBody;
+            }
+
+            return null;
         }
     }
 }

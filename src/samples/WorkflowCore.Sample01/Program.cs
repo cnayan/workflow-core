@@ -8,22 +8,22 @@ namespace WorkflowCore.Sample01
 {
     public class Program
     {
-        
         public static void Main(string[] args)
         {
             IServiceProvider serviceProvider = ConfigureServices();
 
             //start the workflow host
             var host = serviceProvider.GetService<IWorkflowHost>();
-            host.RegisterWorkflow<HelloWorldWorkflow>();        
-            host.Start();            
+            host.RegisterWorkflow<HelloWorldWorkflow>();
+
+            host.Start();
 
             host.StartWorkflow("HelloWorld", 1, null);
             
             Console.ReadLine();
             host.Stop();
         }
-                
+
         private static IServiceProvider ConfigureServices()
         {
             //setup dependency injection

@@ -19,7 +19,7 @@ namespace WorkflowCore.Persistence.EntityFramework
             persistable.Data = JsonConvert.SerializeObject(instance.Data, SerializerSettings);
             persistable.Description = instance.Description;
             persistable.Reference = instance.Reference;
-            persistable.InstanceId = new Guid(instance.Id);
+            persistable.InstanceId = instance.Id;// new Guid(instance.Id);
             persistable.NextExecution = instance.NextExecution;
             persistable.Version = instance.Version;
             persistable.WorkflowDefinitionId = instance.WorkflowDefinitionId;
@@ -94,8 +94,8 @@ namespace WorkflowCore.Persistence.EntityFramework
 
         internal static PersistedSubscription ToPersistable(this EventSubscription instance)
         {
-            PersistedSubscription result = new PersistedSubscription();            
-            result.SubscriptionId = new Guid(instance.Id);
+            PersistedSubscription result = new PersistedSubscription();
+            result.SubscriptionId = instance.Id;// new Guid(instance.Id);
             result.EventKey = instance.EventKey;
             result.EventName = instance.EventName;
             result.StepId = instance.StepId;
@@ -108,7 +108,7 @@ namespace WorkflowCore.Persistence.EntityFramework
         internal static PersistedEvent ToPersistable(this Event instance)
         {
             PersistedEvent result = new PersistedEvent();
-            result.EventId = new Guid(instance.Id);
+            result.EventId = instance.Id;// new Guid(instance.Id);
             result.EventKey = instance.EventKey;
             result.EventName = instance.EventName;
             result.EventTime = DateTime.SpecifyKind(instance.EventTime, DateTimeKind.Utc);

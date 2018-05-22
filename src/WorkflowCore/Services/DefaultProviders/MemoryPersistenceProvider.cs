@@ -98,7 +98,7 @@ namespace WorkflowCore.Services
             }
         }
 
-        public async Task<IEnumerable<EventSubscription>> GetSubcriptions(string eventName, string eventKey, DateTime asOf)
+        public async Task<IEnumerable<EventSubscription>> GetSubscriptions(string eventName, string eventKey, DateTime asOf)
         {
             lock (_subscriptions)
             {

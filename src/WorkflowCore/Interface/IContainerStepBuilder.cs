@@ -12,5 +12,12 @@ namespace WorkflowCore.Interface
         /// <param name="builder"></param>
         /// <returns></returns>
         IStepBuilder<TData, TReturnStep> Do(Action<IWorkflowBuilder<TData>> builder);
+
+        /// <summary>
+        /// The block of steps to execute
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        IStepBuilder<TData, TReturnStep> Do<TStep>() where TStep : IStepBody;
     }
 }

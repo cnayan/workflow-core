@@ -11,7 +11,7 @@ namespace WorkflowCore.Persistence.EntityFramework.Models
         public long PersistenceId { get; set; }
 
         [MaxLength(200)]
-        public Guid InstanceId { get; set; }
+        public string InstanceId { get; set; }
 
         [MaxLength(200)]
         public string WorkflowDefinitionId { get; set; }

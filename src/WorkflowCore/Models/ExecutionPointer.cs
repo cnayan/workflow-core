@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace WorkflowCore.Models
 {
+    [System.Diagnostics.DebuggerDisplay("{StepId}, {StepName}")]
     public class ExecutionPointer
     {
         public string Id { get; set; }
@@ -25,8 +26,8 @@ namespace WorkflowCore.Models
 
         public bool EventPublished { get; set; }
 
-        public object EventData { get; set; }                
-        
+        public object EventData { get; set; }
+
         public Dictionary<string, object> ExtensionAttributes { get; set; } = new Dictionary<string, object>();
 
         public string StepName { get; set; }
@@ -42,7 +43,7 @@ namespace WorkflowCore.Models
         public object Outcome { get; set; }
 
         public PointerStatus Status { get; set; } = PointerStatus.Legacy;
-        
+
         public Stack<string> Scope { get; set; } = new Stack<string>();
     }
 
